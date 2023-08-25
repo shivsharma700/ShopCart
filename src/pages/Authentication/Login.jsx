@@ -21,7 +21,7 @@ function Login() {
                 email: formDetails.email,
                 password: formDetails.password
             }); 
-            setToken("jwt-token", response.data.token)
+            setToken("jwt-token", response.data.token, {httpOnly: true})
             navigate('/');
         } catch (error) {
             authRef.current.resetFormData();
