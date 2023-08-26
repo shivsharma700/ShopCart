@@ -4,16 +4,19 @@ import Auth from '../../components/Auth/Auth';
 import './Auth.css';
 import axios from 'axios';
 import { sigin } from '../../Api/FetchApi';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useCookies } from 'react-cookie';
+import jwt_decode from "jwt-decode";
+import UserContext from '../../context/UserContext';
 
 function Login() {
 
     const notify = () => toast("Error!");
     const navigate = useNavigate()
-    const [token, setToken] = useCookies(['jwt-token'])
-    console.log(token)
     const authRef = useRef(null);
+    const [token, setToken] = useCookies(['jwt-token'])
+    const {user, setUser} = useContext(UserContext);
+
     async function onAuthFormSubmit(formDetails) {
         try {
             const response = await axios.post(sigin(), {
@@ -21,7 +24,9 @@ function Login() {
                 email: formDetails.email,
                 password: formDetails.password
             }); 
-            setToken("jwt-token", response.data.token, {httpOnly: true})
+            const tokenDetails=jwt_decode(response.data.token)
+            setUser({username: tokenDetails.user, id: tokenDetails.id})
+            setToken("jwt-token", response.data.token)
             navigate('/');
         } catch (error) {
             authRef.current.resetFormData();

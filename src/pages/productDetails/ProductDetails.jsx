@@ -1,14 +1,21 @@
 // CSS imports
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import './style.css';
 import { useParams } from 'react-router-dom';
 import useSingleProduct from '../../hooks/useSingleProduct';
+import CartContext from '../../context/CartContext';
 
 function ProductDetails() {
 
     const {id} = useParams()
+    const {cart, setCart} = useContext(CartContext);
 
     const product = useSingleProduct(id);
+
+    function onAddingProduct(){
+        console.log("adding product")
+        setCart({...cart, products: [...cart.products, id]})
+    }
     
     return (
         product &&
@@ -36,7 +43,11 @@ function ProductDetails() {
                             </div>
                         </div>
 
-                        <div className="product-details-action btn btn-primary text-decoration-non">Add to cart</div>
+                        <div
+                           onClick={onAddingProduct}
+                           className="product-details-action btn btn-primary text-decoration-non">
+                              Add to cart
+                        </div>
                         <a href="cart.html" id="goToCartBtn" className="product-details-action btn btn-warning text-decoration-none">
                             Go to cart
                         </a>
