@@ -9,3 +9,13 @@ Currently, two official plugins are available:
 
 mongoDB atlas
 86hWqLLkIbiR5saH
+
+////////////
+PORT=8765
+
+DB_HOST=db
+DB_USERNAME=root
+DB_PASSWORD=example
+DB_NAME=fake_store
+DB_PORT=27017
+DATABASE_URL=mongodb+srv://ShivSharma:86hWqLLkIbiR5saH@cluster0.yu1lbot.mongodb.net/shopCartDB?retryWrites=true&w=majority

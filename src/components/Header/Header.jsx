@@ -1,3 +1,4 @@
+// library import
 import { useContext, useEffect, useState } from 'react';
 import {
   Collapse,
@@ -11,29 +12,39 @@ import {
   DropdownItem,
   NavbarText,
 } from 'reactstrap';
-
-// CSS import
-import './Header.css';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
+// CSS import
+import './Header.css';
+// Context import
 import UserContext from '../../context/UserContext';
 import CartContext from '../../context/CartContext';
 
+
 function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [token, setToken, removeToken] = useCookies(['jwt-token'])
-  const toggle = () => setIsOpen(!isOpen);
+  const [token, setToken, removeToken] = useCookies(['jwt-token']);
   const {user, setUser} = useContext(UserContext);
-  const {cart} = useContext(CartContext);
+  const {cart, setCart} = useContext(CartContext);
+  const toggle = () => setIsOpen(!isOpen);
+  
+  function logout() {
+    removeToken('jwt-token', {httpOnly: true});
+    axios.get(`${import.meta.env.VITE_FAKE_STORE_URL}/logout`, {withCredentials: true});
+    setUser(null);
+    setCart(null);
+  }
 
-  useEffect(()=>{
-  },[token])
+  useEffect(() => {
+  }, [token]);
 
   return (
     <div>
-      <Navbar {...props} >
-        <NavbarBrand  id="title">
-          <Link to={"/"} >Shop Cart</Link>
+      <Navbar {...props}>
+        <NavbarBrand id="title">
+          <Link to="/">Shop Cart</Link>
+
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -43,14 +54,13 @@ function Header(props) {
                 Options
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>Cart{cart.products.length}</DropdownItem>
+                {user && <DropdownItem>{<Link to={`/cart/${user?.id}`} >Cart {cart && cart.products && `(${cart.products.length})`}</Link>} </DropdownItem>}
                 <DropdownItem>Settings</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
-                  {token["jwt-token"] ? <Link onClick={()=>{
-                    removeToken('jwt-token');
-                    setUser(null)
-                  }} to={"/signin"} >Logout</Link> : <Link to={"/signin"} >SignIN</Link>}
+                  {token['jwt-token'] ? <Link onClick={() => {
+                    logout();
+                  }} to="/signin">Logout</Link> : <Link to="/signin">SignIn</Link>}
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
