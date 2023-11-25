@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderDetailsProduct = ({title, price, image, quantity}) => {
+const OrderDetailsProduct = ({title, price, image, quantity, onRemove, onUpdate}) => {
    
    const quantityAvailable = [1,2,3,4,5,6,7,8,9,10];
 
@@ -15,15 +15,15 @@ const OrderDetailsProduct = ({title, price, image, quantity}) => {
              <div>&#8377; {price}</div>
           </div>
           <div className="order-details-product-actions d-flex flex-column">
-            <div className="order-details-product-quantitiy">
+            <div className="order-details-product-quantity">
               <div className="fw-bold">Quantity</div>
               <div className="form-group">
-                 <select className="form-select">
-                    {quantityAvailable.map(id => <option selected= {quantity == id} key= {id} value= {id} >{id}</option>)}
+                 <select onChange={e => onUpdate(e.target.value)} className="form-select">
+                    {quantityAvailable.map(id => <option  selected= {quantity == id} key= {id} value= {id} >{id}</option>)}
                  </select>
               </div>
             </div>
-            <button className="order-details-product-remove btn btn-danger" >Remove</button>
+            <button onClick={onRemove} className="order-details-product-remove btn btn-danger" >Remove</button>
           </div>
           </div>
           <hr />
