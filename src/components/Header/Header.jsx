@@ -12,7 +12,7 @@ import {
   DropdownItem,
   NavbarText,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 // CSS import
@@ -36,6 +36,8 @@ function Header(props) {
     setCart(null);
   }
 
+  const navigate = useNavigate();
+
   useEffect(() => {
   }, [token]);
 
@@ -56,6 +58,7 @@ function Header(props) {
               <DropdownMenu right>
                 {user && <DropdownItem>{<Link to={`/cart/${user?.id}`} >Cart {cart && cart.products && `(${cart.products.length})`}</Link>} </DropdownItem>}
                 <DropdownItem>Settings</DropdownItem>
+                <DropdownItem onClick={()=>navigate("/cart/")} >Cart</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
                   {token['jwt-token'] ? <Link onClick={() => {

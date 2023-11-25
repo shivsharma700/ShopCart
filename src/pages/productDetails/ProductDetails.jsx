@@ -1,5 +1,5 @@
 // CSS imports
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import './style.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import useSingleProduct from '../../hooks/useSingleProduct';
@@ -55,7 +55,7 @@ function ProductDetails() {
                            className="product-details-action btn btn-primary text-decoration-non">
                               Add to cart
                         </div>
-                        <a href="cart.html" id="goToCartBtn" className="product-details-action btn btn-warning text-decoration-none">
+                        <a onClick={()=>navigate("/cart/")} id="goToCartBtn" className="product-details-action btn btn-warning text-decoration-none">
                             Go to cart
                         </a>
                     </div>
