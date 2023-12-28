@@ -5,13 +5,20 @@ import CategoryItem from '../../components/CategoryItem/CategoryItem';
 import useCategory from '../../hooks/useCategory';
 import { useContext } from 'react';
 import UserContext from '../../context/UserContext'
-import useCart from '../../hooks/useCart';
 import { useEffect } from 'react';
+import Navcontext from '../../context/Navcontext';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
     const [categories] = useCategory(); 
     const {user} = useContext(UserContext);
-    const {cart} = useCart(user? user.id : undefined);
+    const navigate = useNavigate();
+    const {setShowNav} = useContext(Navcontext);
+
+    // after login setting showNav as true the value
+    setShowNav(true);
+
+    if(!user) navigate("/signin")
 
     useEffect(()=>{
     },[user])
@@ -24,7 +31,11 @@ function Home() {
 
                   <CategoryItem itemName="All Products" />
                     
-                {categories && categories.map(category => <CategoryItem itemName={category} key={category} filter={category} />)}
+                {categories && categories.map((category,idx) => {
+                    if(idx < 5){
+                        return    <CategoryItem itemName={category} key={category} filter={category} />
+                    }
+                })}
                     
                 </div>
                 <div className="category-title text-center">

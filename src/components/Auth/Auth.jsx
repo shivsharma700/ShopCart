@@ -5,9 +5,9 @@ function Auth({ onSubmit }, ref) {
 
     const [formDetails, setFormDetails] = useState({email: '', password: '', username: '', isLoading: false});
 
-    function updateEmail(updatedEmail) {
-        setFormDetails({...formDetails, email: updatedEmail});
-    }
+    // function updateEmail(updatedEmail) {
+    //     setFormDetails({...formDetails, email: updatedEmail});
+    // }
 
     function updatePassword(updatedPassword) {
         setFormDetails({...formDetails, password: updatedPassword});
@@ -33,20 +33,26 @@ function Auth({ onSubmit }, ref) {
     }, []);
 
     useEffect(() => {
-        setFormDetails({email: '', password: '', username: '', isLoading: false});
+        setFormDetails({ password: '', username: '', isLoading: false});
     }, [])
 
     return (
-        <>
+        <>  
+            username - atuny0
             <div className="input-group">
                 <input onChange={(e) => updateUsername(e.target.value)} value={formDetails.username} type="text" className="form-control" placeholder="Username" id="loginUsername"/>
-            </div>
-            <div className="input-group">
-                <input onChange={(e) => updateEmail(e.target.value)} value={formDetails.email} type="email" className="form-control" placeholder="Email" id="loginUserEmail" />
-            </div>
+                
+            </div> 
+            {
+            //   showEmail &&
+            //   <div className="input-group">
+            //       <input onChange={(e) => updateEmail(e.target.value)} value={formDetails.email} type="email" className="form-control" placeholder="Email" id="loginUserEmail" />
+            //   </div>
+            }
+            password - 9uQFF1Lh
             <div className="input-group">
                 <input onChange={(e) => updatePassword(e.target.value)} value={formDetails.password} type="password" className="form-control" placeholder="Password" id="loginPassword"/>
-            </div>
+            </div> 
             
             <div className="input-group">
             <button onClick={onFormSubmit} className="form-control btn btn-primary" type="button" disabled={formDetails.isLoading}>

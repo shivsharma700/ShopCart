@@ -1,37 +1,47 @@
 // CSS imports
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import './style.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import useSingleProduct from '../../hooks/useSingleProduct';
 import CartContext from '../../context/CartContext';
 import UserContext from '../../context/UserContext';
-import axios from 'axios';
-import { addProductToUserCart } from '../../Api/FetchApi';
 
 function ProductDetails() {
 
     const {id} = useParams();
-    const {cart, setCart} = useContext(CartContext);
+    const {cart,setCart} = useContext(CartContext);
     const {user, setUser} = useContext(UserContext);
     const navigate = useNavigate();
 
     const product = useSingleProduct(id);
 
-    async function addProductToCart(){
+    function addProductToCart(){
         if(!user) return;
-        const response = await axios.put(addProductToUserCart(), {userId: user.id, productId: id});
-         setCart({...response.data});
-        navigate(`/cart/${user.id}`);
+        let check = false;
+        cart.map(product => {
+            if(product.productId == id){
+                check = true
+            }
+        })
+        if(!check){
+            const newProduct = {productId: id, quantity: 1}
+            const newCart = [...cart];
+            newCart.push(newProduct);
+            setCart(newCart)
+        }
     }
+
+    useEffect(()=>{
+    },[cart])
     
     return (
         product &&
         <div className="container">
             <div className="row">
                 <div className="product-details-wrapper d-flex justify-content-between align-items-start flex-row">
-                    <div className="product-img d-flex">
+                    <div className="product-Detail-img d-flex">
                         <img 
-                            src={product?.image} 
+                            src={product?.images[0]} 
                             alt="product image" 
                             id="product-img" 
                         />
@@ -45,7 +55,7 @@ function ProductDetails() {
                             <div className="product-description">
                                 <div className="product-description-title fw-bold">Description</div>
                                 <div className="product-description-data" id="product-description-data">
-                                {product?.description}
+                                  {product?.description}
                                 </div>
                             </div>
                         </div>

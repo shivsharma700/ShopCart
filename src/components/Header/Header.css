@@ -1,5 +1,25 @@
-#title a {
+#NavBar{
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid gray;
+}
+
+#title span {
     letter-spacing: 10px;
     color: black;
     text-decoration: none;
+    cursor: pointer;
+}
+
+.NavBar-search{
+    width: 20rem;
+}
+.NavBar-search input {
+    text-align: center;
+}
+
+.CartText{
+    margin-right: 2rem;
+    cursor: pointer;
 }

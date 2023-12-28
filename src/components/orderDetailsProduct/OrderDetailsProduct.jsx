@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderDetailsProduct = ({title, price, image, quantity, onRemove, onUpdate}) => {
+const OrderDetailsProduct = ({title, price, image, quantity, onRemove }) => {
    
    const quantityAvailable = [1,2,3,4,5,6,7,8,9,10];
 
@@ -18,7 +18,7 @@ const OrderDetailsProduct = ({title, price, image, quantity, onRemove, onUpdate}
             <div className="order-details-product-quantity">
               <div className="fw-bold">Quantity</div>
               <div className="form-group">
-                 <select onChange={e => onUpdate(e.target.value)} className="form-select">
+                 <select className="form-select">
                     {quantityAvailable.map(id => <option  selected= {quantity == id} key= {id} value= {id} >{id}</option>)}
                  </select>
               </div>

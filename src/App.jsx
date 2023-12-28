@@ -7,46 +7,30 @@ import Footer from './components/footer/Footer'
 import MainRoutes from './routes/MainRoutes'
 import UserContext from './context/UserContext'
 import CartContext from "./context/CartContext";
-import { useCookies } from 'react-cookie'
 import { useEffect } from 'react'
-import jwt_decode from "jwt-decode";
-import axios from 'axios'
-import { fetchUserCart } from './helper/fetchUserCartHelper'
+
+import Navcontext from './context/Navcontext'
  
 
 function App() {
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState({});
-  const [token, setToken] = useCookies(['jwt-token']);
-
- async function accessToken() {
-      const res = await axios.get(`${import.meta.env.VITE_FAKE_STORE_URL}/accesstoken`, {withCredentials: true})
-      setToken('jwt-token', res.data.token, {httpOnly: true});
-      const tokenDetails = jwt_decode(res.data.token);
-      setUser({username: tokenDetails.user, id: tokenDetails.id});
-  }
-
-  async function load(){
-    if(!user){
-      await  accessToken();
-    }
-    if(user){
-      await fetchUserCart(user.id, setCart);
-    }
-  }
+  const [cart, setCart] = useState([]); // we will store id and quantity of added product in this cart
+  const [showNav, setShowNav] = useState(true);
 
   useEffect(() => {
-    load();
   }, [user])
 
   return (
     <UserContext.Provider value={{user,setUser}}>
-      <CartContext.Provider value={{cart, setCart}}>
-        <div className='app-wrapper'>
-           <Header color="light" light={true} expand="md" container="md"/>
-           <MainRoutes/>
-           <Footer/>
-        </div> 
+      <CartContext.Provider value={{cart,setCart}}>
+        <Navcontext.Provider value={{showNav, setShowNav}}>
+           <div className='app-wrapper'>
+            {/* showNav is bolean varible for avoiding Header inside login page */}
+              {showNav && <Header color="light" light={true} expand="md" container="md"/>}
+              <MainRoutes/>
+              <Footer/>
+           </div> 
+        </Navcontext.Provider>
       </CartContext.Provider>
     </UserContext.Provider>
   )

@@ -4,16 +4,16 @@ import './Auth.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useRef } from 'react';
 import { useCookies } from 'react-cookie';
-import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // component imports
 import Auth from '../../components/Auth/Auth';
-// api imports
-import { sigin } from '../../Api/FetchApi';
+
 // context import
 import UserContext from '../../context/userContext';
+import { sigin } from '../../Api/FetchApi';
+import Navcontext from '../../context/Navcontext';
 
 function Login() {
 
@@ -21,17 +21,25 @@ function Login() {
 
     const authRef = useRef(null);
     const navigate = useNavigate();
-    const [token, setToken] = useCookies(['jwt-token']);
-    const {setUser} = useContext(UserContext);
+    const [token,setToken] = useCookies(['jwt-token']);
+    const {user,setUser} = useContext(UserContext);
+    const {setShowNav} = useContext(Navcontext)
+    
+    setShowNav(false);
+
     async function onAuthFormSubmit(formDetails) {
-        try {
+        try {          
             const response = await axios.post(sigin(), {
                 username: formDetails.username,
-                email: formDetails.email,
                 password: formDetails.password
-            }, {withCredentials: true}); 
-            const tokenDetails = jwt_decode(response.data.token);
-            setUser({username: tokenDetails.user, id: tokenDetails.id});
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json' 
+                }
+              },{withCredentials: true}); 
+
+            setUser({username: response.data.firstName, id: response.data.id});
             setToken('jwt-token', response.data.token, {httpOnly: true});
             navigate('/');
         } catch (error) {
