@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Auth from '../../components/Auth/Auth';
 
 // context import
-import UserContext from '../../context/userContext';
+import UserContext from '../../context/UserContext';
 import { sigin } from '../../Api/FetchApi';
 import Navcontext from '../../context/Navcontext';
 
