@@ -22,7 +22,7 @@ function Login() {
     const authRef = useRef(null);
     const navigate = useNavigate();
     const [token,setToken] = useCookies(['jwt-token']);
-    const {user,setUser} = useContext(UserContext);
+    const {setUser} = useContext(UserContext);
     const {setShowNav} = useContext(Navcontext)
     
     setShowNav(false);
